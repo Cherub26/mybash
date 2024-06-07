@@ -4,9 +4,6 @@ iatest=$(expr index "$-" i)
 #######################################################
 # SOURCED ALIAS'S AND SCRIPTS BY zachbrowne.me
 #######################################################
-if [ -f /usr/bin/fastfetch ]; then
-	fastfetch
-fi
 
 # Source global definitions
 if [ -f /etc/bashrc ]; then
@@ -327,9 +324,9 @@ up() {
 cd ()
 {
 	if [ -n "$1" ]; then
-		builtin cd "$@" && ls
+		builtin cd "$@"
 	else
-		builtin cd ~ && ls
+		builtin cd ~
 	fi
 }
 
@@ -366,7 +363,30 @@ distribution ()
 				dtype="slackware"
 				;;
 			*)
-				# If ID is not recognized, keep dtype as unknown
+				# Check ID_LIKE only if dtype is still unknown
+				if [ -n "$ID_LIKE" ]; then
+					case $ID_LIKE in
+						*fedora*|*rhel*|*centos*)
+							dtype="redhat"
+							;;
+						*sles*|*opensuse*)
+							dtype="suse"
+							;;
+						*ubuntu*|*debian*)
+							dtype="debian"
+							;;
+						*gentoo*)
+							dtype="gentoo"
+							;;
+						*arch*)
+							dtype="arch"
+							;;
+						*slackware*)
+							dtype="slackware"
+							;;
+					esac
+				fi
+				# If ID is not recognized, dtype remains unknown
 				;;
 		esac
 	fi
@@ -392,7 +412,7 @@ ver() {
 			cat /etc/SuSE-release
 			;;
 		"debian")
-			lsb_release -a
+			lsb_release -cdir
 			;;
 		"gentoo")
 			cat /etc/gentoo-release
@@ -573,7 +593,6 @@ function hb {
 #######################################################
 
 alias hug="hugo server -F --bind=10.0.0.97 --baseURL=http://10.0.0.97"
-bind '"\C-f":"zi\n"'
 
 export PATH=$PATH:"$HOME/.local/bin:$HOME/.cargo/bin:/var/lib/flatpak/exports/bin:/.local/share/flatpak/exports/bin"
 
