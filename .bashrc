@@ -598,7 +598,8 @@ export PATH=$PATH:"$HOME/.local/bin:$HOME/.cargo/bin:/var/lib/flatpak/exports/bi
 
 # Install Starship - curl -sS https://starship.rs/install.sh | sh
 eval "$(starship init bash)"
-eval "$(zoxide init bash)"
+# I added --cmd cd part here to change cd and cdi to z and zi remove those to go back to the normal way
+eval "$(zoxide init --cmd cd bash)"
 
 [[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
 eval "$(atuin init bash)"
